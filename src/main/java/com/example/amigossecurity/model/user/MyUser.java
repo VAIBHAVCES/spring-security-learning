@@ -29,8 +29,6 @@ public class MyUser implements UserDetails {
 
     String lastName;
     String email;
-    String phone;
-    String username;
     String password;
 
 
@@ -50,7 +48,7 @@ public class MyUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.email;
     }
 
     @Override

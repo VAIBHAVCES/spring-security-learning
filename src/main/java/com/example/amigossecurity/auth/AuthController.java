@@ -1,5 +1,6 @@
 package com.example.amigossecurity.auth;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,9 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
     @PostMapping("/registers")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest body

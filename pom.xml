@@ -53,11 +53,7 @@
 <!--		</dependency>-->
 
 
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
+
 <!--	JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -71,6 +67,7 @@
 			<version>42.6.0</version>
 		</dependency>
 <!--User for JWT coding and decoding -->
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>

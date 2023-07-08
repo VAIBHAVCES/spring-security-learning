@@ -3,6 +3,7 @@ package com.example.amigossecurity.auth;
 import com.example.amigossecurity.config.JwtService;
 import com.example.amigossecurity.model.user.MyUser;
 import com.example.amigossecurity.model.user.MyUserRepository;
+import com.example.amigossecurity.model.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,6 +49,7 @@ public class AuthenticationService {
                 .lastName(body.getLastName())
                 .email(body.getUsername())
                 .password(passwordEncoder.encode(body.getPassword()))
+                .role(Role.USER)
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);

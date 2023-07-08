@@ -3,16 +3,12 @@ package com.example.amigossecurity.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.security.Signature;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +46,7 @@ public class JwtService {
                         .setSubject(userDetails.getUsername())
                         .setIssuedAt(new Date(System.currentTimeMillis()))
                         .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-                        .signWith ( SignatureAlgorithm.HS256, getSignInKey())
+                        .signWith ( getSignInKey(), SignatureAlgorithm.HS256)
                         .compact();
     }
     public <T> T extractClaim(String token, Function<Claims, T>claimsResolve){
@@ -60,8 +56,9 @@ public class JwtService {
 
     private Claims extractAllClaims(String token){
         return Jwts
-                .parser()
+                .parserBuilder()
                 .setSigningKey(getSignInKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
