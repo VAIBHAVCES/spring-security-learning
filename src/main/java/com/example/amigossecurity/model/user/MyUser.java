@@ -1,5 +1,10 @@
-package com.example.amigossecurity.model;
+package com.example.amigossecurity.model.user;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,16 +13,28 @@ import java.util.Collection;
 import java.util.List;
 
 //Model for storing it in security
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+// we are using small "user" because data JPA also has its own table called User
+@Table
 public class MyUser implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) //Makes this value as auto generated
+    Integer id;
 
-    String name ;
+    String firstName ;
+
+    String lastName;
     String email;
     String phone;
     String username;
     String password;
 
 
-
+    @Enumerated(EnumType.STRING)
     private Role role;
 
 
