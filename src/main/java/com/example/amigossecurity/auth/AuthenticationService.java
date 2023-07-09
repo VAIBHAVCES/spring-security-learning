@@ -5,13 +5,16 @@ import com.example.amigossecurity.model.user.MyUser;
 import com.example.amigossecurity.model.user.MyUserRepository;
 import com.example.amigossecurity.model.user.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 
 public class AuthenticationService {
@@ -25,25 +28,30 @@ public class AuthenticationService {
 
 
 
-    public AuthenticationResponse authenticate(AuthenticationRequest body) {
 
+    public AuthenticationResponse authenticate(AuthenticationRequest body) {
+        log.info("Service layer of authenticate method ");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         body.getEmail(),
                     body.getPassword()
                 )
         );
+        log.info("After running authenticate method from auth manager this req should be authentiacted: {}", SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         // at this point user is authenticated
 
         var user =repository.findByEmail(body.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
+        log.info("This ist he token I am sending {} for user : {} in registeration", jwtToken, body.getEmail());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
     public AuthenticationResponse register(RegisterRequest body) {
+        log.info("Register request from the service layer ");
         var user = MyUser.builder()
                 .firstName(body.getFirstName())
                 .lastName(body.getLastName())
@@ -53,8 +61,11 @@ public class AuthenticationService {
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+        log.info("This ist he token I am sending {} for user : {} in registeration", jwtToken, body.getUsername());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+
+
     }
 }
